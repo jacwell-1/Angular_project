@@ -1,0 +1,13 @@
+<h2>Document Manager</h2>
+
+<app-document-list 
+  [documents]="documents" 
+  (documentSelected)="onDocumentSelected($event)">
+</app-document-list>
+
+<hr>
+
+<app-document-detail 
+  *ngIf="selectedDocument" 
+  [document]="selectedDocument">
+</app-document-detail>

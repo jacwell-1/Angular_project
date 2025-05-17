@@ -1,0 +1,7 @@
+/* src/app/components/document-detail/document-detail.component.css */
+.detail-card {
+  padding: 15px;
+  border: 1px solid #ccc;
+  background-color: #f7f7f7;
+  border-radius: 5px;
+}

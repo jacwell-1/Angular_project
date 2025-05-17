@@ -1,0 +1,11 @@
+<!-- src/app/components/document-detail/document-detail.component.html -->
+<div class="detail-card">
+  <h3>{{ document.name | uppercase }}</h3>
+  <p><strong>Type:</strong> {{ document.type }}</p>
+  <p><strong>Category:</strong> {{ document.category }}</p>
+  <p><strong>Added on:</strong> {{ document.dateAdded | date:'longDate' }}</p>
+  <p><strong>Description:</strong> {{ document.description || 'N/A' }}</p>
+  <p><strong>Tags:</strong> {{ document.tags.join(', ') }}</p>
+
+  <a [href]="document.url" target="_blank">Open Document</a>
+</div>

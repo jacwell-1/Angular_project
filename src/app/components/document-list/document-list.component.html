@@ -1,0 +1,16 @@
+<!-- src/app/components/document-list/document-list.component.html -->
+<div *ngIf="documents.length > 0; else noDocs">
+  <ul>
+    <li 
+      *ngFor="let doc of documents" 
+      (click)="selectDocument(doc)"
+      [ngClass]="{'selected': false}">
+      <strong>{{ doc.name }}</strong> ({{ doc.type }}) - {{ doc.category }}<br>
+      <small>{{ doc.dateAdded | date }}</small>
+    </li>
+  </ul>
+</div>
+
+<ng-template #noDocs>
+  <p>No documents found.</p>
+</ng-template>
