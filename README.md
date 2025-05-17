@@ -1,59 +1,146 @@
 # DocumentManager
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.10.
+### Contexte du projet
 
-## Development server
+Le projet Document Manager est une application Angular conçue pour organiser des documents par catégorie. Le but était de construire l’app en utilisant les standalone components Angular, avec une structure simple composée de 3 composants :
 
-To start a local development server, run:
+`AppComponent` : composant principal qui sert de conteneur et de routeur.
 
-```bash
-ng serve
-```
+`DocumentListComponent` : affiche la liste des documents.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+`DocumentDetailComponent` : affiche les détails d’un document sélectionné.
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+#### Commande initiale pour créer un projet Angular standalone :
 
 ```bash
-ng generate component component-name
+ng new document-manager --standalone --routing --style=css
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+#### Ajout des composants nécessaires via Angular CLI (standalone) :
 
 ```bash
-ng generate --help
+ng generate component document-list --standalone
+ng generate component document-detail --standalone
 ```
 
-## Building
+### Architecture des fichiers et scripts Angular
 
-To build the project run:
+`app.component.ts` et `app.component.html`
+
+Emplacement :
+
+`src/app/app.component.ts et src/app/app.component.html`
+
+Rôle :
+
+C’est le composant racine qui initialise l’application.
+Il contient le routeur Angular (`RouterOutlet`) pour afficher soit la liste des documents soit le détail selon la route choisie.
+
+Fonctionnement :
+
+Le template HTML utilise l’interpolation pour afficher des titres.
+
+Il utilise les directives de routage pour naviguer entre composants.
+
+La logique TypeScript gère la navigation principale.
+
+`document-list.component.ts` et `document-list.component.html`
+
+Emplacement :
+
+`src/app/document-list/document-list.component.ts et .html`
+
+Rôle :
+
+Afficher tous les documents sous forme de liste, filtrables par catégorie, triables, etc.
+
+Fonctionnalités clés :
+
+Utilisation de `*ngFor` pour parcourir la liste des documents.
+
+Utilisation de `@Output()` et EventEmitter pour informer le parent (`app`) lorsqu’un document est sélectionné.
+
+Binding (property et event) pour la sélection et l’affichage dynamique.
+
+Pipes pour formatter les dates ou filtrer les données.
+
+
+
+`document-detail.component.ts` et `document-detail.component.html`
+
+Emplacement :
+
+`src/app/document-detail/document-detail.component.ts et .html`
+
+Rôle :
+
+Afficher les informations détaillées d’un document sélectionné (nom, type, catégorie, tags, description, lien).
+
+Fonctionnalités clés :
+
+Reçoit le document sélectionné via `@Input()` depuis le parent.
+
+Affiche conditionnellement des sections via `*ngIf`.
+
+Utilise `ngClass` pour appliquer des styles selon le type de document.
+
+Gère des événements utilisateur (bouton retour, téléchargement).
+
+### Interfaces TypeScript
+
+Fichier : `src/app/document-manager.interface.ts`
+
+Description :
+
+Contient l’interface `Document` qui structure les données documentaires utilisées partout :
+
 
 ```bash
-ng build
+export interface Document {
+  id: number;
+  name: string;
+  type: 'pdf' | 'doc' | 'image' | 'other';
+  category: string;
+  dateAdded: Date;
+  tags: string[];
+  url: string;
+  description?: string;
+}
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
 
-## Running unit tests
+### Services Angular
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+Fichier : `src/app/services/document.service.ts`
+
+Rôle :
+
+Centraliser la gestion des documents (récupération, ajout, suppression).
+Ce service fournit une API simple aux composants.
+
+Fonctionnement :
+
+Utilise un tableau local de documents (mock data).
+
+Méthodes pour récupérer la liste complète, récupérer par id, ajouter ou supprimer.
+
+Le service est injecté via `@Injectable({ providedIn: 'root' })`.
+
+
+### Routes Angular
+
+Fichier : `src/app/app-routing.module.ts` ou `config` dans `app.component.ts` si standalone routing
+
+Rôle :
+
+Gérer la navigation entre la liste et le détail d’un document via l’URL.
+
+Exemple de routes :
 
 ```bash
-ng test
+const routes: Routes = [
+  { path: '', component: DocumentListComponent },
+  { path: 'document/:id', component: DocumentDetailComponent },
+  { path: '**', redirectTo: '' }
+];
 ```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
